@@ -9,11 +9,40 @@ SNAKE_COLOR = (43,52,24)
 cell_size = 30
 numbre_of_cells = 25
 
+
+class Food:
+    def __init__(self):
+        self.position = self.generate_random_pos()
+        
+    def draw(self):
+        Food_rect = pygame.Rect(self.position.x * cell_size, self.position.y * cell_size,cell_size, cell_size)
+        pygame.draw.rect(screen, SNAKE_COLOR,Food_rect)
+        
+    def generate_random_pos(self):
+        x=random.randint(0,numbre_of_cells - 1)
+        y  = random.randint(0,numbre_of_cells - 1)
+        position = Vector2(x, y)
+        return position
+    
+class snake:
+    def __init__(self):
+        self.body = [Vector2(6,9), Vector2(5,9), Vector2(4,9)]
+        
+    def draw(self):
+        for segment in self.body:
+            segment_rect = pygame.Rect(segment.x * cell_size, segment.y * cell_size, cell_size, cell_size)
+            pygame.draw.rect(screen, SNAKE_COLOR, segment_rect,0,7)
+        
 screen = pygame.display.set_mode((cell_size * numbre_of_cells, cell_size *  numbre_of_cells,))
 
 pygame.display.set_caption("retro snake")
 
 clock = pygame.time.Clock()
+
+food = Food()
+
+Snake = snake()
+
 
 while True:
     for event in pygame.event.get():
@@ -21,6 +50,9 @@ while True:
             pygame.quit()
             sys.exit()
     screen.fill(BG_COLOR)
+    food.draw()
+    Snake.draw()
     
     pygame.display.update()
     clock.tick(60)
+    
